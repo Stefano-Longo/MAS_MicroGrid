@@ -10,6 +10,7 @@ public class FlexibilityData implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int idBattery;
+	private Calendar analysisDatetime;
 	private Calendar datetime;
 	private double lowerLimit;
 	private double upperLimit;
@@ -17,11 +18,14 @@ public class FlexibilityData implements Serializable {
 	private double desideredChoice; // positive or negative value which represent the choice the single agent
 	private double maxGain;
  
+	private String idBatteryAgent;
 	
+
 	/**
 	 * Message that agents send to aggregator agents
 	 * 
 	 * @param idBattery
+	 * @param analysisDatetime
 	 * @param datetime
 	 * @param lowerLimit
 	 * @param upperLimit
@@ -29,8 +33,9 @@ public class FlexibilityData implements Serializable {
 	 * @param desideredChoice
 	 * @param maxGain
 	 */
-	public FlexibilityData(int idBattery, Calendar datetime, double lowerLimit, double upperLimit, double costKwh, double desideredChoice, double maxGain) {
+	public FlexibilityData(int idBattery, Calendar analysisDatetime, Calendar datetime, double lowerLimit, double upperLimit, double costKwh, double desideredChoice, double maxGain) {
 		this.idBattery = idBattery;
+		this.analysisDatetime = analysisDatetime;
 		this.datetime = datetime;
 		this.lowerLimit = lowerLimit;
 		this.upperLimit = upperLimit;
@@ -39,6 +44,18 @@ public class FlexibilityData implements Serializable {
 		this.maxGain = maxGain;
 	}
 	
+	public Calendar getAnalysisDatetime() {
+		return analysisDatetime;
+	}
+
+	public void setAnalysisDatetime(Calendar analysisDatetime) {
+		this.analysisDatetime = analysisDatetime;
+	}
+
+	public void setIdBattery(int idBattery) {
+		this.idBattery = idBattery;
+	}
+
 	public FlexibilityData() {}
 	
 	public double getCostKwh() {
@@ -99,6 +116,14 @@ public class FlexibilityData implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	
+	public String getIdBatteryAgent() {
+		return idBatteryAgent;
+	}
+
+	public void setIdBatteryAgent(String idBatteryAgent) {
+		this.idBatteryAgent = idBatteryAgent;
 	}
 	
 }

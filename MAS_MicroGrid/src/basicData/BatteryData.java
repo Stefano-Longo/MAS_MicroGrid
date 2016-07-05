@@ -14,6 +14,7 @@ public class BatteryData {
 	private double powerRequested;
 	
 	//not for upload in db
+	private Calendar analisysDatetime = Calendar.getInstance();
 	private double capacity;
 	private String type;
 
@@ -45,6 +46,14 @@ public class BatteryData {
 	
 	public double getCapacity() {
 		return capacity;
+	}
+
+	public Calendar getAnalisysDatetime() {
+		return analisysDatetime;
+	}
+
+	public void setAnalisysDatetime(Calendar analisysDatetime) {
+		this.analisysDatetime = analisysDatetime;
 	}
 
 	public void setCapacity(double capacity) {

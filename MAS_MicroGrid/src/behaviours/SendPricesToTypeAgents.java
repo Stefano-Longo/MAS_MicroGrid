@@ -3,6 +3,7 @@ package behaviours;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import agents.BaseAgent;
 import basicData.TimePowerPrice;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
@@ -22,11 +23,11 @@ public class SendPricesToTypeAgents extends OneShotBehaviour {
 	 */
 	ACLMessage msg;
 	String platform;
-	String receivers = "";
-	public SendPricesToTypeAgents(ACLMessage msg, String platform, String receivers){
+	String serviceType = "";
+	public SendPricesToTypeAgents(ACLMessage msg, String platform, String serviceType){
 		this.msg = msg;
 		this.platform = platform;
-		this.receivers = receivers;
+		this.serviceType = serviceType;
 	}
 	/**
 	 * 
@@ -43,23 +44,24 @@ public class SendPricesToTypeAgents extends OneShotBehaviour {
 		
 		try {
 			ArrayList<TimePowerPrice> content = (ArrayList<TimePowerPrice>)msg.getContentObject();
-	
+			
 			ACLMessage output = new ACLMessage(ACLMessage.INFORM);
 			//output.setContent(msg.getContent());
 			output.setContentObject(msg.getContentObject());
 			output.setConversationId(msg.getConversationId());
-			DFAgentDescription ad = new DFAgentDescription();
+			/*DFAgentDescription ad = new DFAgentDescription();
 			ServiceDescription sd = new ServiceDescription();
 			sd.setType(receivers);
 			ad.addServices(sd);
-			DFAgentDescription[] ca = DFService.search(this.myAgent, ad);
+			DFAgentDescription[] ca = DFService.search(this.myAgent, ad);*/
+			DFAgentDescription[] ca = new BaseAgent().getAgentsbyServiceType(this.myAgent, serviceType);
 
 			for(int i=0; i < ca.length; i++) {
 				output.addReceiver(ca[i].getName());
 			}
 			this.myAgent.send(output);
 			
-		} catch (UnreadableException | FIPAException | IOException e) {
+		} catch (UnreadableException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 

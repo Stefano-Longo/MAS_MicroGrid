@@ -18,7 +18,7 @@ public class DbBatteryData extends DbConnection	{
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(battery.getDatetime().getTime());
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-		String query = "INSERT INTO AgentHistoryBattery (Id, DateTime, SocObjective, Soc, CostKwh, InputPowerMax,"
+		String query = "INSERT INTO BatteryDataHistory (Id, DateTime, SocObjective, Soc, CostKwh, InputPowerMax,"
 				+ " OutputPowerMax, PowerRequested)"
 				+ " VALUES ('"+battery.getIdBattery()+"','"+format.format(cal.getTime())+"',"+battery.getSocObjective()+","
 						+battery.getSoc()+","+battery.getCostKwh()+","+battery.getInputPowerMax()+","
@@ -35,7 +35,7 @@ public class DbBatteryData extends DbConnection	{
 	{
 		BatteryData data = new BatteryData();
 		String query = "SELECT TOP 1 *"
-				+ " FROM AgentHistoryBattery"
+				+ " FROM BatteryDataHistory"
 				+ " WHERE RTRIM(IdBattery) = "+idBattery
 				+ " ORDER BY DateTime DESC";
 		System.out.println(query);
@@ -67,7 +67,7 @@ public class DbBatteryData extends DbConnection	{
 		ArrayList<BatteryData> list = new ArrayList<BatteryData>();
 		
 		String queryString = "SELECT TOP 1 IdBattery, Soc, Capacity, BatteryInputMax, BatteryOutputMax, CostKwh"
-				+ " FROM AgentHistoryBattery AB JOIN AgentBattery A ON Id = IdBattery"
+				+ " FROM BatteryDataHistory AB JOIN AgentBattery A ON Id = IdBattery"
 				+ " WHERE A.IdAgent = '"+idAgent+"'"
 				+ " ORDER BY DateTime DESC";
 		

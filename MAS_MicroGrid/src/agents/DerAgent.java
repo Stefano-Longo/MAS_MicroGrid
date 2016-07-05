@@ -30,7 +30,7 @@ public class DerAgent extends BaseAgent {
 
 	protected void setup(){
 		
-		registerDfAgent("inputt", "DerAgent");
+		registerDfAgent(this.getHap(), "DerAgent");
 		addBehaviour(new ReceiveMessages(this));
 
 	}

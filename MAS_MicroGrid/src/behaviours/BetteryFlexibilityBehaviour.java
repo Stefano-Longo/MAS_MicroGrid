@@ -4,6 +4,7 @@ package behaviours;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -18,19 +19,20 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import utils.GeneralData;
 
-public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
+public class BetteryFlexibilityBehaviour extends OneShotBehaviour {
 
 	/**
 	 * Never go under 20% of SOC
 	 * Never go over 95% of SOC
 	 */
 	private static final long serialVersionUID = 1L;
-	private double slotTime = 15; //15 minuti -> da vedere come usare un valore globale
+	private int timeSlot = new GeneralData().timeSlot; //15 minuti -> da vedere come usare un valore globale
 	private ACLMessage msg;
 	ArrayList<TimePowerPrice> msgData = null; 
 
-	public CalculateBatteryFlexibilityBehaviour(ACLMessage msg) {
+	public BetteryFlexibilityBehaviour(ACLMessage msg) {
 		try {
 			this.msg = msg;
 			this.msgData = (ArrayList<TimePowerPrice>)msg.getContentObject();
@@ -75,9 +77,6 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
 		double maxOutput = getMaxOutput(batteryData.getSoc(), batteryInfo.getSocMin(), batteryInfo.getCapacity(), 
 				batteryInfo.getBatteryOutputMax());
 		
-		System.out.println("maxInput: "+maxInput);
-		System.out.println("maxOutput: "+maxOutput);
-    	
     	/**
 		 * define what the battery wants to do and the flexibility and the gain it has doing that
 		 * use getSocObjective, or anyway another function
@@ -88,6 +87,8 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
 		
 		
 		/*
+		 * PRIORITIES!! Think about it!
+		 * 
 		 * How to calculate desideredChoice :
 		 *  - Reaching the SocObjective (33% of final value)
 		 *  - Be ready for the next requests -> if the requests for the next periods usually (the majority)
@@ -102,10 +103,14 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
 		
 		ArrayList<FlexibilityData> list = new ArrayList<FlexibilityData>();
 		FlexibilityData data = new FlexibilityData();
-		data = new FlexibilityData(batteryInfo.getIdBattery(), batteryData.getDatetime(), -maxInput,
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(batteryData.getDatetime().getTime());
+		cal.add(Calendar.SECOND, new GeneralData().timeSlot);
+		
+		data = new FlexibilityData(batteryInfo.getIdBattery(), cal, batteryData.getDatetime(), -maxInput,
     			maxOutput, batteryData.getCostKwh(), desideredChoice, maxGain);
-    	
 		list.add(data);
+		
 		ACLMessage response = this.msg.createReply();
 		response.setPerformative(ACLMessage.INFORM);
 		response.setConversationId("proposal");
@@ -154,7 +159,7 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
 	{
         if (soc >= socMax)
             return 0;
-        double maxBatteryInputPercentage = (socMax - soc) * capacity * (60/slotTime) / 100;
+        double maxBatteryInputPercentage = (socMax - soc) * capacity * (60/timeSlot) / 100;
         if (maxBatteryInputPercentage > maxInputBattery)
         {
         	return maxInputBattery;
@@ -166,7 +171,7 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
 	{
         if (soc <= socMin)
             return 0;
-        double maxBatteryOutputPercentage = (soc - socMin) * capacity * (60 / slotTime) / 100;
+        double maxBatteryOutputPercentage = (soc - socMin) * capacity * (60 / timeSlot) / 100;
 
         if (maxBatteryOutputPercentage > maxOutputBattery)
         {
@@ -175,15 +180,15 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
     	return maxBatteryOutputPercentage;
     }
 		
-	private double getSocObjective (){
+	private double getSocObjective (){ //60% for now
 		double socObjective = 0;
 		
 
 		/**
-		 * batteryHistory serve solo per autoaddestrare il soc obiettivo
+		 * BatteryDataHistory serve solo per autoaddestrare il soc obiettivo
 		 * Ma se decide tutto il controller il soc obiettivo non viene preso in considerazione?
 		 */
-		/*ArrayList<BatteryData> batteryHistory = new ArrayList<BatteryData>();
+		/*ArrayList<BatteryData> BatteryDataHistory = new ArrayList<BatteryData>();
 		
     	String connectionUrl = "jdbc:sqlserver://172.17.200.1:1433;" +  
     	         "databaseName=MicroGrid;user=Longo;password=Admin.Longo"; 
@@ -196,7 +201,7 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
 	        conn = DriverManager.getConnection(connectionUrl);
         	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");  
 	        stmt = conn.createStatement();
-			String queryString = "select * from AgentHistoryBattery JOIN AgentBattery ON Id = IdBattery"
+			String queryString = "select * from BatteryDataHistory JOIN AgentBattery ON Id = IdBattery"
 					+ " WHERE AgentBattery.IdAgent = "+this.myAgent.getName()
 					+ " GROUP BY DATEPART(YEAR, DT.[Date]), DATEPART(MONTH, DT.[Date]), DATEPART(DAY, DT.[Date]), DATEPART(HOUR, DT.[Date]),(DATEPART(MINUTE, DT.[Date]) / 15)";
 			//raggruppa i dati per ogni 15 minuti
@@ -206,7 +211,7 @@ public class CalculateBatteryFlexibilityBehaviour extends OneShotBehaviour {
 				cal.setTime(rs.getDate(4));
 				BatteryData data = new BatteryData(rs.getInt(1), rs.getString(2), rs.getString(3), 
 						cal, rs.getDouble(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8), rs.getDouble(9), rs.getDouble(10));
-				batteryHistory.add(data);
+				BatteryDataHistory.add(data);
 			}
 	    }catch(Exception e){
 	    	

@@ -24,6 +24,21 @@ public class BaseAgent extends Agent {
 		}
 	}
 	
+	
+	public DFAgentDescription[] getAgentsbyServiceType (Agent myAgent, String serviceType)
+	{
+		DFAgentDescription ad = new DFAgentDescription();
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType(serviceType);
+		ad.addServices(sd);
+		DFAgentDescription[] ca = null;
+		try {
+			ca = DFService.search(myAgent, ad);
+		} catch (FIPAException e) {
+			e.printStackTrace();
+		}
+		return ca;
+	}
 	/*protected void takeDown()
 	{
 		if (subDF == null)
