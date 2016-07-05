@@ -39,6 +39,8 @@ public class BaseAgent extends Agent {
 		}
 		return ca;
 	}
+	
+	
 	/*protected void takeDown()
 	{
 		if (subDF == null)

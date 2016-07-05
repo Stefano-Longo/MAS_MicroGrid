@@ -25,7 +25,11 @@ public class ControlAgent extends BaseAgent {
 		 * 
 		 * arriva un messaggio 
 		 */
+<<<<<<< HEAD
 		registerDfAgent(this.getHap(), "ControlAgent");
+=======
+		registerDfAgent("inputt", "ControlAgent");
+>>>>>>> refs/remotes/origin/master
 		this.addBehaviour(new ReceiveMessages(this));
 		
 	}

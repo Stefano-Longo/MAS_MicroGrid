@@ -1,5 +1,6 @@
 package behaviours;
 
+<<<<<<< HEAD
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -20,4 +21,10 @@ public class AggregateDerBehaviour extends OneShotBehaviour {
 	{
 		
 	}
+=======
+import jade.core.behaviours.FSMBehaviour;
+
+public class AggregateDerBehaviour extends FSMBehaviour {
+
+>>>>>>> refs/remotes/origin/master
 }

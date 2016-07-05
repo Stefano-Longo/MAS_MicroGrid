@@ -1,5 +1,6 @@
 package behaviours;
 
+<<<<<<< HEAD
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -20,6 +21,11 @@ public class AggregateLoadBehaviour extends OneShotBehaviour {
 		// TODO Auto-generated method stub
 		
 	}
+=======
+import jade.core.behaviours.FSMBehaviour;
+
+public class AggregateLoadBehaviour extends FSMBehaviour {
+>>>>>>> refs/remotes/origin/master
 	
 	
 

@@ -1,5 +1,6 @@
 package database;
 
+<<<<<<< HEAD
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -134,4 +135,8 @@ public class DbAggregatorBattery extends DbConnection {
 		
 		return list;
 	}
+=======
+public class DbAggregatorBattery {
+
+>>>>>>> refs/remotes/origin/master
 }
