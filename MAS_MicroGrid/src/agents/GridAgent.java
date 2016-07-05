@@ -15,11 +15,7 @@ public class GridAgent extends BaseAgent {
 	
 	protected void setup(){
 		
-<<<<<<< HEAD
 		registerDfAgent(this.getHap(), "GridAgent");
-=======
-		registerDfAgent("inputt", "GridAgent");
->>>>>>> refs/remotes/origin/master
 		this.addBehaviour(new ReceiveMessages(this));
 		
 	}

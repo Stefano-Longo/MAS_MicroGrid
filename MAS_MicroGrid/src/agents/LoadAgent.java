@@ -18,11 +18,7 @@ public class LoadAgent extends BaseAgent {
 		 * Takes as input the ids (number) of the platforms for which it is created
 		 */
 		
-<<<<<<< HEAD
 		registerDfAgent(this.getHap(), "LoadAgent");
-=======
-		registerDfAgent("inputt", "LoadAgent");
->>>>>>> refs/remotes/origin/master
 		this.addBehaviour(new ReceiveMessages(this));
 		
 		// end registration

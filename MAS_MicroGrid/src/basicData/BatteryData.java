@@ -54,39 +54,6 @@ public class BatteryData {
 
 	public void setAnalisysDatetime(Calendar analisysDatetime) {
 		this.analisysDatetime = analisysDatetime;
-=======
-	private double capacity;
-	private String type;
-
-	/**
-	 * 
-	 * @param idBattery
-	 * @param datetime
-	 * @param socObjective
-	 * @param soc
-	 * @param costKwh
-	 * @param inputPowerMax
-	 * @param outputPowerMax
-	 * @param powerRequested
-	 */
-	public BatteryData(int idBattery, Calendar datetime, double socObjective, 
-			double soc, double costKwh, double inputPowerMax, double outputPowerMax, double powerRequested)
-	{
-		this.idBattery = idBattery;
-		this.datetime = datetime;
-		this.socObjective = socObjective;
-		this.soc = soc;
-		this.costKwh = costKwh;
-		this.inputPowerMax = inputPowerMax;
-		this.outputPowerMax = outputPowerMax;
-		this.powerRequested = powerRequested;
-	}
-	
-	public BatteryData() { }
-	
-	public double getCapacity() {
-		return capacity;
->>>>>>> refs/remotes/origin/master
 	}
 
 	public void setCapacity(double capacity) {

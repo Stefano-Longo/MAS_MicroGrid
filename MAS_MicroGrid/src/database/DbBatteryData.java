@@ -18,7 +18,6 @@ public class DbBatteryData extends DbConnection	{
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(battery.getDatetime().getTime());
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-<<<<<<< HEAD
 		String query = "INSERT INTO BatteryDataHistory (Id, DateTime, SocObjective, Soc, CostKwh, InputPowerMax,"
 				+ " OutputPowerMax, PowerRequested)"
 				+ " VALUES ('"+battery.getIdBattery()+"','"+format.format(cal.getTime())+"',"+battery.getSocObjective()+","
@@ -69,58 +68,6 @@ public class DbBatteryData extends DbConnection	{
 		
 		String queryString = "SELECT TOP 1 IdBattery, Soc, Capacity, BatteryInputMax, BatteryOutputMax, CostKwh"
 				+ " FROM BatteryDataHistory AB JOIN AgentBattery A ON Id = IdBattery"
-=======
-		String query = "INSERT INTO AgentHistoryBattery (Id, DateTime, SocObjective, Soc, CostKwh, InputPowerMax,"
-				+ " OutputPowerMax, PowerRequested)"
-				+ " VALUES ('"+battery.getIdBattery()+"','"+format.format(cal.getTime())+"',"+battery.getSocObjective()+","
-						+battery.getSoc()+","+battery.getCostKwh()+","+battery.getInputPowerMax()+","
-						+battery.getOutputPowerMax()+","+battery.getPowerRequested()+")";
-		try {
-			return stmt.execute(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public BatteryData getLastBatteryData (int idBattery)
-	{
-		BatteryData data = new BatteryData();
-		String query = "SELECT TOP 1 *"
-				+ " FROM AgentHistoryBattery"
-				+ " WHERE RTRIM(IdBattery) = "+idBattery
-				+ " ORDER BY DateTime DESC";
-		System.out.println(query);
-		try {
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next())
-			{
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(rs.getDate("DateTime"));
-				
-				data.setIdBattery(rs.getInt("IdBattery"));
-				data.setDatetime(cal);
-				data.setSocObjective(rs.getDouble("SocObjective"));
-				data.setSoc(rs.getDouble("Soc"));
-				data.setCostKwh(rs.getDouble("CostKwh"));
-				data.setInputPowerMax(rs.getDouble("InputPowerMax"));
-				data.setOutputPowerMax(rs.getDouble("OutputPowerMax"));
-				data.setPowerRequested(rs.getDouble("PowerRequested"));
-			}
-			return data;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return data;
-	}
-
-	/*public ArrayList<BatteryData> getLastBatteryData(String idAgent)
-	{
-		ArrayList<BatteryData> list = new ArrayList<BatteryData>();
-		
-		String queryString = "SELECT TOP 1 IdBattery, Soc, Capacity, BatteryInputMax, BatteryOutputMax, CostKwh"
-				+ " FROM AgentHistoryBattery AB JOIN AgentBattery A ON Id = IdBattery"
->>>>>>> refs/remotes/origin/master
 				+ " WHERE A.IdAgent = '"+idAgent+"'"
 				+ " ORDER BY DateTime DESC";
 		
@@ -150,8 +97,5 @@ public class DbBatteryData extends DbConnection	{
 		list.add(data);
 		return null;
 	}*/
-	
-	
-	
 	
 }

@@ -16,11 +16,7 @@ public class BatteryAgent extends BaseAgent {
 		 * Takes in input the ids (number) of the platforms for which it is created
 		 */
 		
-<<<<<<< HEAD
 		registerDfAgent(this.getHap(), "BatteryAgent");
-=======
-		registerDfAgent("inputt", "BatteryAgent");
->>>>>>> refs/remotes/origin/master
 		this.addBehaviour(new ReceiveMessages(this));
 		
 	}
